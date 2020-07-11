@@ -5,6 +5,9 @@ from django.contrib.auth.models import User
 from .forms import UserLoginForm, UserRegistrationForm
 
 # Create your views here.
+def index(request):
+    return render(request, 'index.html')
+
 @login_required
 def logout(request):
     """Log the user out"""
@@ -13,7 +16,7 @@ def logout(request):
     return redirect(reverse('index'))
 
 
-def index(request):
+def login(request):
     if request.user.is_authenticated:
         print(request.user)
     if request.method == "POST":
@@ -27,7 +30,7 @@ def index(request):
                 if user:
                     auth.login(user=user, request=request)
                     messages.success(request, "Welcome, " + user.first_name + "!")
-                    return redirect(reverse('watchlist:watchlist'))
+                    return redirect(reverse('index'))
                 else:
                     form.add_error(None, "Your username or password is incorrect.")
         elif request.POST.get('submit') == 'sign_up':
@@ -41,7 +44,7 @@ def index(request):
                     auth.login(user=user, request=request)
                     messages.success(request, "Welcome, " + user.first_name +
                                     "! Your account was successfully created.")
-                    return redirect(reverse('watchlist:watchlist'))
+                    return redirect(reverse('index'))
                 else:
                     registration_form.add_error(
                         request("Sorry, we are unable to register your account at this time."))
@@ -49,4 +52,4 @@ def index(request):
         "login_form": UserLoginForm,
         "registration_form": UserRegistrationForm
     }
-    return render(request, "index.html", context)
+    return render(request, "login.html", context)
