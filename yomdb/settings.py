@@ -44,7 +44,8 @@ INSTALLED_APPS = [
     #IMPORTED APPS
 
     #PROJECT APPS
-    'watchlist'
+    'accounts',
+    'watchlist',
 ]
 
 MIDDLEWARE = [
@@ -62,7 +63,7 @@ ROOT_URLCONF = 'yomdb.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': ['templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -126,3 +127,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/static/'
+
+
+# Environment variables to transfer to other files in project
+API = os.environ.get("API")
