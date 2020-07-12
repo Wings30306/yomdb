@@ -5,14 +5,14 @@
     <div class="col-md-6">
         <form method="POST">
             {% csrf_token %}
-            {{ registration_form }}
+            {{ registration_form.as_p }}
             <button type='submit' name='submit' value='sign_up'>Sign Up</button>
         </form>
     </div>
     <div class="col-md-6">
         <form method="POST">
             {% csrf_token %}
-            {{ login_form }}
+            {{ login_form.as_p }}
             <button type='submit' name='submit' value='sign_in'>Sign In</button>
         </form>
     </div>
