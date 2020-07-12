@@ -18,7 +18,7 @@ def logout(request):
 
 def login(request):
     if request.user.is_authenticated:
-        print(request.user)
+        return redirect('watchlist:watchlist')
     if request.method == "POST":
         if request.POST.get('submit') == 'sign_in':
             registration_form = UserRegistrationForm
@@ -31,13 +31,12 @@ def login(request):
                 if user:
                     auth.login(user=user, request=request)
                     messages.success(request, "Welcome, " + user.first_name + "!")
-                    return redirect(reverse('index'))
+                    return redirect(reverse('watchlist:watchlist'))
                 else:
                     login_form.add_error(None, "Your username or password is incorrect.")
         elif request.POST.get('submit') == 'sign_up':
             login_form = UserLoginForm
             registration_form = UserRegistrationForm(request.POST)
-            print(registration_form, registration_form.is_valid)
             if registration_form.is_valid():
                 registration_form.save()
 
@@ -47,7 +46,7 @@ def login(request):
                     auth.login(user=user, request=request)
                     messages.success(request, "Welcome, " + user.first_name +
                                     "! Your account was successfully created.")
-                    return redirect(reverse('index'))
+                    return redirect(reverse('watchlist:watchlist'))
                 else:
                     registration_form.add_error(
                         request("Sorry, we are unable to register your account at this time."))
