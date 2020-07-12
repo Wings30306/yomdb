@@ -128,7 +128,3 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/static/'
-
-
-# Environment variables to transfer to other files in project
-API = "http://www.omdbapi.com/?type=movie&apikey=" + os.environ.get("API_KEY") + "&search="
