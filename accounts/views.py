@@ -21,9 +21,10 @@ def login(request):
         print(request.user)
     if request.method == "POST":
         if request.POST.get('submit') == 'sign_in':
-            form = UserLoginForm(request.POST)
+            registration_form = UserRegistrationForm
+            login_form = UserLoginForm(request.POST)
 
-            if form.is_valid():
+            if login_form.is_valid():
                 user = auth.authenticate(username=request.POST['username'],
                                         password=request.POST['password'])
 
@@ -32,9 +33,11 @@ def login(request):
                     messages.success(request, "Welcome, " + user.first_name + "!")
                     return redirect(reverse('index'))
                 else:
-                    form.add_error(None, "Your username or password is incorrect.")
+                    login_form.add_error(None, "Your username or password is incorrect.")
         elif request.POST.get('submit') == 'sign_up':
+            login_form = UserLoginForm
             registration_form = UserRegistrationForm(request.POST)
+            print(registration_form, registration_form.is_valid)
             if registration_form.is_valid():
                 registration_form.save()
 
@@ -48,8 +51,11 @@ def login(request):
                 else:
                     registration_form.add_error(
                         request("Sorry, we are unable to register your account at this time."))
+    else:
+        login_form = UserLoginForm
+        registration_form = UserRegistrationForm
     context = {
-        "login_form": UserLoginForm,
-        "registration_form": UserRegistrationForm
+        "login_form": login_form,
+        "registration_form": registration_form
     }
     return render(request, "login.html", context)
