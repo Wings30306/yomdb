@@ -42,21 +42,9 @@ class UserRegistrationForm(UserCreationForm):
                     'placeholder': 'Your email'
                 }
             ),
-            "first_name": forms.TextInput(
-                attrs={
-                    'class': 'form-control',
-                    'placeholder': 'Your first name'
-                }
-            ),
-            "last_name": forms.TextInput(
-                attrs={
-                    'class': 'form-control',
-                    'placeholder': 'Your last name'
-                }
-            )}
+            }
         model = User
-        fields = ['username', 'email', 'first_name',
-                  'last_name', 'password1', 'password2']
+        fields = ['username', 'email', 'password1', 'password2']
 
     def clean_email(self):
         """ Validate email data """
