@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block content %}
+<input type="search" name="search" id="search" class="mt-5">
+<div id="show-results"></div>
+
+{% endblock %}
+{% block template_script %}
+<script>
+    const resultDiv = document.querySelector('#show-results')
+    const searchInput = document.querySelector('#search');
+    searchInput.addEventListener('change', displayMatches);
+    searchInput.addEventListener('keyup', displayMatches);
+
+    function displayMatches() {
+        resultDiv.innerHTML = ""
+        const API = "http://www.omdbapi.com/?type=movie&apikey=da298606&s="
+        fetch(API + this.value)
+            .then(searchResult => searchResult.json())
+            .then(movies => movies.Search
+            .map(movie => makeHtmlString(movie.imdbID)))
+    }
+
+
+    function makeHtmlString(data) {
+        fetch(`http://www.omdbapi.com/?i=${data}&apikey=da298606`)
+        .then(result => result.json())
+        .then(result => `<h3>${result.Title}</h3><p>ID: ${result.imdbID}</p><p>Cast: ${result.Actors}</p><p>Genre: ${result.Genre}</p>`)
+        .then(htmlString => resultDiv.innerHTML += htmlString)
+    }
+
+
+
+
+</script>
+{% endblock %}

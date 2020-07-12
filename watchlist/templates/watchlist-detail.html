@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="row">
+    <div class="col-12 mx-auto text-center">
+        <h3>{{object.movie}}</h3>
+        <p>Cast: {{object.movie.cast}}</p>
+        <p>Genre: {{object.movie.genre}}</p>
+        {% if object.watched %}
+        <p>You've watched this movie</p>
+        <form method="post">
+            {% csrf_token %}
+            <button type="submit">Set status to UNWATCHED</button>
+        </form>
+        {% else %}
+        <p>You have not watched this movie yet</p>
+        <form method="post">
+            {% csrf_token %}
+            <button type="submit">Set status to WATCHED</button>
+        </form>
+        {% endif %}
+    </div>
+</div>
+<div class="row">
+    <a href="{% url 'watchlist:watchlist' %}" class="btn btn-lg mx-auto">Back to Watchlist</a>
+</div>
+{% endblock %}

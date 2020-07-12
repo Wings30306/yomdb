@@ -3,4 +3,16 @@
 <div class="row">
     <div class="col-12"><input type="search" name="search" id="search" class="mx-auto"></div>
 </div>
+<div class="row">
+    {% for item in queryset %}
+    <div class="col-12 col-sm-6 col-lg-4">
+        <h3><a href="{% url 'watchlist:watchlist_detail' primary_key=item.pk %}">{{item.movie}}</a></h3>
+        <p>Cast: {{item.movie.cast}}</p>
+        <p>Genre: {{item.movie.genre}}</p>
+        {% if item.watched %}
+        <p>You've watched this movie</p>
+        {% endif %}
+    </div>
+    {% endfor %}
+</div>
 {% endblock %}
