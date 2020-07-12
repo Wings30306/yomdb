@@ -48,6 +48,16 @@ class CreateWatchlistItem(CreateView):
 
 @login_required
 def add_movie(request):
-    if request.method == "post":
-        print("Add this movie to database")
+    if request.method == "POST":
+        try:
+            Movie.objects.get(api_id=request.POST.get("id"))
+            return redirect('watchlist:create_watchlist_item')
+        except Movie.DoesNotExist:
+            Movie.objects.create(
+                api_id=request.POST.get("id"),
+                title=request.POST.get("title"),
+                cast=request.POST.get("cast"),
+                genre=request.POST.get("genre")
+            )
+            return redirect('watchlist:create_watchlist_item')
     return render(request, "new-movie.html")
