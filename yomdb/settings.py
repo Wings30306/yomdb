@@ -13,7 +13,8 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 import os
 from os import path
 if path.exists("env.py"):
-  import env 
+    print("using env.py")
+    import env
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -130,4 +131,4 @@ STATIC_URL = '/static/'
 
 
 # Environment variables to transfer to other files in project
-API = os.environ.get("API")
+API = "http://www.omdbapi.com/?type=movie&apikey=" + os.environ.get("API_KEY") + "&search="
