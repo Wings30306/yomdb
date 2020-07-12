@@ -17,19 +17,16 @@
         fetch(API + this.value)
             .then(searchResult => searchResult.json())
             .then(movies => movies.Search
-            .map(movie => makeHtmlString(movie.imdbID)))
+                .map(movie => makeHtmlString(movie.imdbID)))
     }
 
 
     function makeHtmlString(data) {
         fetch(`http://www.omdbapi.com/?i=${data}&apikey=da298606`)
-        .then(result => result.json())
-        .then(result => `<h3>${result.Title}</h3><p>ID: ${result.imdbID}</p><p>Cast: ${result.Actors}</p><p>Genre: ${result.Genre}</p>`)
-        .then(htmlString => resultDiv.innerHTML += htmlString)
+            .then(result => result.json())
+            .then(result => `<h3>${result.Title}</h3><p>ID: ${result.imdbID}</p><p>Cast: ${result.Actors}</p><p>Genre: ${result.Genre}</p>
+        <form method="POST">{% csrf_token %}<input type="hidden" name="title" value="${result.Title}"><input type="hidden" name="cast" value="${result.Actors}"><input type="hidden" name="genre" value="${result.Genre}"><input type="hidden" name="id" value="${result.imdbID}"><input type="submit" value="Add movie">`)
+            .then(htmlString => resultDiv.innerHTML += htmlString)
     }
-
-
-
-
 </script>
 {% endblock %}
