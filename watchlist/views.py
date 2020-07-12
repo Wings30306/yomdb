@@ -1,11 +1,13 @@
 from django.shortcuts import render, redirect, reverse
 from django.views.generic import CreateView
 from django.conf import settings
+from django.contrib.auth.decorators import login_required
 import requests
 import json
 from datetime import date
 from .models import WatchlistItem, Movie
 
+@login_required
 def Watchlist(request):
     context = {
         "queryset": WatchlistItem.objects.filter(user=request.user)
@@ -13,6 +15,7 @@ def Watchlist(request):
     template_name = "watchlist.html"
     return render(request, template_name, context)
 
+@login_required
 def watchlist_detail(request, primary_key):
     """Shows details for a specific service"""
     template_name = 'watchlist-detail.html'
@@ -43,6 +46,7 @@ class CreateWatchlistItem(CreateView):
         obj.save()
         return redirect("watchlist:watchlist_detail", primary_key= obj.pk)
 
+@login_required
 def add_movie(request):
     if request.method == "post":
         print("Add this movie to database")
