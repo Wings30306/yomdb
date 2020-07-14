@@ -44,6 +44,7 @@ class CreateWatchlistItem(CreateView):
         obj.user = self.request.user
         date_added = date.today()
         obj.save()
+        print(obj)
         return redirect("watchlist:watchlist_detail", primary_key= obj.pk)
 
 @login_required
@@ -51,7 +52,6 @@ def add_movie(request):
     if request.method == "POST":
         try:
             Movie.objects.get(api_id=request.POST.get("id"))
-            return redirect('watchlist:create_watchlist_item')
         except Movie.DoesNotExist:
             Movie.objects.create(
                 api_id=request.POST.get("id"),
@@ -59,5 +59,14 @@ def add_movie(request):
                 cast=request.POST.get("cast"),
                 genre=request.POST.get("genre")
             )
-            return redirect('watchlist:create_watchlist_item')
+        movie = Movie.objects.get(api_id=request.POST.get("id"))
+        try:
+            WatchlistItem.objects.get(movie=movie, user=request.user)
+        except WatchlistItem.DoesNotExist:
+            WatchlistItem.objects.create(
+                user=request.user,
+                movie=movie,
+                date_added = date.today(),
+            )
+        return redirect('watchlist:watchlist')
     return render(request, "new-movie.html")
