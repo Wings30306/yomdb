@@ -7,8 +7,31 @@ import json
 from datetime import date
 from .models import WatchlistItem, Movie
 
+def helper():
+    movies = Movie.objects.all()
+    list_by_type = {}
+    titles = []
+    genres = []
+    actors = []
+    for movie in movies:
+        movie_genres = movie.genre.split(", ")
+        movie_actors = movie.cast.split(", ")
+        title = movie.title
+        if title not in titles:
+            titles.append(title)
+        for genre in movie_genres:
+            if genre not in genres:
+                genres.append(genre)
+        for actor in movie_actors:
+            if actor not in actors:
+                actors.append(actor)
+    list_by_type.update({"titles": titles, "actors": actors, "genres": genres})
+    return list_by_type
+
 @login_required
 def Watchlist(request):
+    list_by_type = helper()
+    print(list_by_type)
     context = {
         "queryset": WatchlistItem.objects.filter(user=request.user)
     }
