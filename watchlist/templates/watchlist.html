@@ -1,18 +1,59 @@
 {% extends "base.html" %}
 {% block content %}
 <div class="row">
-    <div class="col-12"><input type="search" name="search" id="search" class="mx-auto"></div>
+    <div class="col-12 col-md-4"><input type="search" name="title" id="search" class="mx-auto"></div>
+    <div class="col-12 col-md-4">
+        <select name="genre" id="genre">
+            <option value="none">No Genre Selected</option>
+            {% for genre in genres %}
+            <option value="{{ genre }}">{{ genre }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="col-12 col-md-4">
+        <select name="cast" id="cast">
+            <option value="none">No Actor Selected</option>
+            {% for actor in actors %}
+            <option value="{{ actor }}">{{ actor }}</option>
+            {% endfor %}
+        </select>
+    </div>
 </div>
-<div class="row">
+<div id="selected-movies" class="row">
     {% for item in queryset %}
     <div class="col-12 col-sm-6 col-lg-4">
-        <h3><a href="{% url 'watchlist:watchlist_detail' primary_key=item.pk %}">{{item.movie}}</a></h3>
-        <p>Cast: {{item.movie.cast}}</p>
-        <p>Genre: {{item.movie.genre}}</p>
+        <h3><a href="{% url 'watchlist:watchlist_detail' primary_key=item.pk %}">{{item.title}}</a></h3>
+        <p>Cast: {{item.cast}}</p>
+        <p>Genre: {{item.genre}}</p>
         {% if item.watched %}
         <p>You've watched this movie</p>
         {% endif %}
     </div>
     {% endfor %}
 </div>
+{% endblock %}
+{% block template_script %}
+{{ queryset|json_script:"all-movies" }}
+<script>
+    const movies = JSON.parse(document.getElementById('all-movies').textContent);
+
+    const searchbox = document.getElementById('search')
+    const genreDropdown = document.getElementById('genre')
+    const actorDropdown = document.getElementById('cast')
+
+    const selectionDiv = document.getElementById('selected-movies')
+
+    function getSelectedMovies(event) {
+        console.log(event.target.name)
+        console.log(event.target.value)
+        const selectedMovies = movies.filter(movie => movie[event.target.name].toLowerCase().includes(event.target.value.toLowerCase()))
+        console.log(selectedMovies)
+    }
+
+    genreDropdown.addEventListener("change", getSelectedMovies)
+    actorDropdown.addEventListener("change", getSelectedMovies)
+    searchbox.addEventListener("change", getSelectedMovies)
+
+</script>
+
 {% endblock %}
