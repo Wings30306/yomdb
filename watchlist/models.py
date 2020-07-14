@@ -16,7 +16,7 @@ class WatchlistItem(models.Model):
     movie = models.ForeignKey(Movie, on_delete=models.PROTECT)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     date_added = models.DateField(default = date.today)
-    watched = models.BooleanField()
+    watched = models.BooleanField(null=True)
 
     class Meta:
         constraints = [
