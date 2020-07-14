@@ -25,15 +25,19 @@ def helper():
         for actor in movie_actors:
             if actor not in actors:
                 actors.append(actor)
-    list_by_type.update({"titles": titles, "actors": actors, "genres": genres})
+        genres_alphabetical = sorted(genres)
+        actors_alphabetical = sorted(actors, key=lambda x: x.split(" ")[-1])
+    list_by_type.update({"titles": titles, "actors": actors_alphabetical, "genres": genres_alphabetical})
     return list_by_type
 
 @login_required
 def Watchlist(request):
     list_by_type = helper()
-    print(list_by_type)
     context = {
-        "queryset": WatchlistItem.objects.filter(user=request.user)
+        "queryset": WatchlistItem.objects.filter(user=request.user),
+        "titles": list_by_type["titles"],
+        "genres": list_by_type["genres"],
+        "actors": list_by_type["actors"]
     }
     template_name = "watchlist.html"
     return render(request, template_name, context)
