@@ -33,7 +33,7 @@ def helper():
 @login_required
 def Watchlist(request):
     list_by_type = helper()
-    movies = [{"pk": entry.id, "title": entry.movie.title, "cast": entry.movie.cast, "genre": entry.movie.genre, "watched": entry.watched} for entry in WatchlistItem.objects.all()]
+    movies = [{"pk": entry.id, "title": entry.movie.title, "cast": entry.movie.cast, "genre": entry.movie.genre, "watched": entry.watched} for entry in WatchlistItem.objects.filter(user = request.user)]
     context = {
         "queryset": movies,
         "titles": list_by_type["titles"],
