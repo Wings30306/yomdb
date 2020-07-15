@@ -4,7 +4,7 @@
     <div class="col-12 col-md-4"><input type="search" name="title" id="search" class="mx-auto"></div>
     <div class="col-12 col-md-4">
         <select name="genre" id="genre">
-            <option value="none">No Genre Selected</option>
+            <option value="">No Genre Selected</option>
             {% for genre in genres %}
             <option value="{{ genre }}">{{ genre }}</option>
             {% endfor %}
@@ -12,7 +12,7 @@
     </div>
     <div class="col-12 col-md-4">
         <select name="cast" id="cast">
-            <option value="none">No Actor Selected</option>
+            <option value="">No Actor Selected</option>
             {% for actor in actors %}
             <option value="{{ actor }}">{{ actor }}</option>
             {% endfor %}
@@ -46,14 +46,19 @@
     function getSelectedMovies(event) {
         console.log(event.target.name)
         console.log(event.target.value)
-        const selectedMovies = movies.filter(movie => movie[event.target.name].toLowerCase().includes(event.target.value.toLowerCase()))
+        const selectedMovies = movies.filter(movie => movie["genre"].toLowerCase().includes(genreDropdown.value.toLowerCase()))
+            .filter(movie => movie["cast"].toLowerCase().includes(actorDropdown.value.toLowerCase()))
         console.log(selectedMovies)
+    }
+
+    function regexGetMovies(event) {
+        console.log(event)
     }
 
     genreDropdown.addEventListener("change", getSelectedMovies)
     actorDropdown.addEventListener("change", getSelectedMovies)
-    searchbox.addEventListener("change", getSelectedMovies)
-    searchbox.addEventListener("keyup", getSelectedMovies)
+    searchbox.addEventListener("change", regexGetMovies)
+    searchbox.addEventListener("keyup", regexGetMovies)
 
 </script>
 
