@@ -2,6 +2,7 @@ from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 
+
 class UserLoginForm(forms.Form):
     """Form to be used to log users in"""
     username = forms.CharField(label='Your name',
@@ -24,8 +25,10 @@ class UserRegistrationForm(UserCreationForm):
     )
     password2 = forms.CharField(label="Password Confirmation",
                                 widget=forms.PasswordInput(
-                                    attrs={'class': 'form-control',
-                                           'placeholder': 'Confirm your password'},
+                                    attrs={
+                                        'class': 'form-control',
+                                        'placeholder':
+                                        'Confirm your password'},
                                     render_value=True))
 
     class Meta:
@@ -42,7 +45,7 @@ class UserRegistrationForm(UserCreationForm):
                     'placeholder': 'Your email'
                 }
             ),
-            }
+        }
         model = User
         fields = ['username', 'email', 'password1', 'password2']
 

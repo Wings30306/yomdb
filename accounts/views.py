@@ -4,9 +4,10 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from .forms import UserLoginForm, UserRegistrationForm
 
-# Create your views here.
+
 def index(request):
     return render(request, 'index.html')
+
 
 @login_required
 def logout(request):
@@ -26,14 +27,16 @@ def login(request):
 
             if login_form.is_valid():
                 user = auth.authenticate(username=request.POST['username'],
-                                        password=request.POST['password'])
+                                         password=request.POST['password'])
 
                 if user:
                     auth.login(user=user, request=request)
-                    messages.success(request, "Welcome, " + user.first_name + "!")
+                    messages.success(
+                        request, "Welcome, " + user.first_name + "!")
                     return redirect(reverse('watchlist:watchlist'))
                 else:
-                    login_form.add_error(None, "Your username or password is incorrect.")
+                    login_form.add_error(
+                        None, "Your username or password is incorrect.")
         elif request.POST.get('submit') == 'sign_up':
             login_form = UserLoginForm
             registration_form = UserRegistrationForm(request.POST)
@@ -41,11 +44,11 @@ def login(request):
                 registration_form.save()
 
                 user = auth.authenticate(username=request.POST['username'],
-                                        password=request.POST['password1'])
+                                         password=request.POST['password1'])
                 if user:
                     auth.login(user=user, request=request)
                     messages.success(request, "Welcome, " + user.first_name +
-                                    "! Your account was successfully created.")
+                                     "! Your account was successfully created.")
                     return redirect(reverse('watchlist:watchlist'))
                 else:
                     registration_form.add_error(

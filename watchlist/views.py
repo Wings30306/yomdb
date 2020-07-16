@@ -7,6 +7,7 @@ import json
 from datetime import date
 from .models import WatchlistItem, Movie
 
+
 def helper():
     movies = Movie.objects.all()
     list_by_type = {}
@@ -27,13 +28,23 @@ def helper():
                 actors.append(actor)
         genres_alphabetical = sorted(genres)
         actors_alphabetical = sorted(actors, key=lambda x: x.split(" ")[-1])
-    list_by_type.update({"titles": titles, "actors": actors_alphabetical, "genres": genres_alphabetical})
+    list_by_type.update({"titles": titles,
+                         "actors": actors_alphabetical,
+                         "genres": genres_alphabetical})
     return list_by_type
+
 
 @login_required
 def Watchlist(request):
     list_by_type = helper()
-    movies = [{"pk": entry.id, "title": entry.movie.title, "cast": entry.movie.cast, "genre": entry.movie.genre, "watched": entry.watched} for entry in WatchlistItem.objects.filter(user = request.user)]
+    movies = [
+        {
+            "pk": entry.id,
+            "title": entry.movie.title,
+            "cast": entry.movie.cast,
+            "genre": entry.movie.genre,
+            "watched": entry.watched} for entry in WatchlistItem.objects.filter(
+            user=request.user)]
     context = {
         "queryset": movies,
         "titles": list_by_type["titles"],
@@ -42,6 +53,7 @@ def Watchlist(request):
     }
     template_name = "watchlist.html"
     return render(request, template_name, context)
+
 
 @login_required
 def watchlist_detail(request, primary_key):
@@ -63,6 +75,7 @@ def watchlist_detail(request, primary_key):
         return redirect("watchlist:watchlist")
     return render(request, template_name=template_name, context=context)
 
+
 class CreateWatchlistItem(CreateView):
     model = WatchlistItem
     fields = ["movie", "watched"]
@@ -73,7 +86,8 @@ class CreateWatchlistItem(CreateView):
         date_added = date.today()
         obj.save()
         print(obj)
-        return redirect("watchlist:watchlist_detail", primary_key= obj.pk)
+        return redirect("watchlist:watchlist_detail", primary_key=obj.pk)
+
 
 @login_required
 def add_movie(request):
@@ -94,7 +108,7 @@ def add_movie(request):
             WatchlistItem.objects.create(
                 user=request.user,
                 movie=movie,
-                date_added = date.today(),
+                date_added=date.today(),
             )
         return redirect('watchlist:watchlist')
     return render(request, "new-movie.html")
