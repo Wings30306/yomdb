@@ -18,6 +18,7 @@ def logout(request):
 
 
 def login(request):
+    """Show user registration/login page, apply logic on POST depending on form used"""
     if request.user.is_authenticated:
         return redirect('watchlist:watchlist')
     if request.method == "POST":

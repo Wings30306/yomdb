@@ -6,6 +6,7 @@ from django.contrib.auth.models import User
 
 
 class Movie(models.Model):
+    """Save selected movie to the database"""
     title = models.CharField(max_length=50)
     cast = models.CharField(max_length=150)
     genre = models.CharField(max_length=150)
@@ -16,6 +17,7 @@ class Movie(models.Model):
 
 
 class WatchlistItem(models.Model):
+    """Save Watchlist Item to the database"""
     movie = models.ForeignKey(Movie, on_delete=models.PROTECT)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     date_added = models.DateField(default=date.today)

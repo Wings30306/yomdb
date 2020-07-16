@@ -9,6 +9,8 @@ from .models import WatchlistItem, Movie
 
 
 def helper():
+    """Create lists of all titles, genres and actors in database
+    This will be used for populating dropdowns and search functionality"""
     movies = Movie.objects.all()
     list_by_type = {}
     titles = []
@@ -36,6 +38,7 @@ def helper():
 
 @login_required
 def Watchlist(request):
+    """Show all watchlist items saved by user"""
     list_by_type = helper()
     movies = [
         {
@@ -57,7 +60,7 @@ def Watchlist(request):
 
 @login_required
 def watchlist_detail(request, primary_key):
-    """Shows details for a specific service"""
+    """Shows details for a specific watchlist item"""
     template_name = 'watchlist-detail.html'
     if request.method == "POST":
         obj = WatchlistItem.objects.get(pk=primary_key)
@@ -77,6 +80,7 @@ def watchlist_detail(request, primary_key):
 
 
 class CreateWatchlistItem(CreateView):
+    """Create watchlist item with movie already saved in database"""
     model = WatchlistItem
     fields = ["movie", "watched"]
 
@@ -91,6 +95,7 @@ class CreateWatchlistItem(CreateView):
 
 @login_required
 def add_movie(request):
+    """Add movie and save it as to the user's watchlist"""
     if request.method == "POST":
         try:
             Movie.objects.get(api_id=request.POST.get("id"))
