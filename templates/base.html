@@ -1,4 +1,4 @@
-{% load static from static %}
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -25,7 +25,7 @@
         rel="stylesheet" />
 
     <!-- My custom styles -->
-    <link rel="stylesheet" href="" />
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
 </head>
 
 <body>
@@ -58,7 +58,7 @@
     </nav>
 
     <!-- Page Header (from template) -->
-    <header class="masthead d-none d-md-block">
+    <header class="masthead d-none d-sm-block">
         <div class="overlay"></div>
         <div class="container-fluid">
             <div class="row">

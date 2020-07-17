@@ -1,0 +1,6 @@
+.masthead .overlay {
+    /* image by Donald Tong via Pexels https://www.pexels.com/nl-nl/foto/architectuur-binnen-binnenshuis-bioscoop-109669/ */
+    background-image: url("../images/cinema.jpg");
+    background-size: cover;
+    background-position: center;
+}
