@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load static %}
 {% block content %}
 <div class="row">
     <div class="col-12 col-md-4"><input type="search" name="title" id="search" class="mx-auto"></div>
@@ -34,35 +35,6 @@
 {% endblock %}
 {% block template_script %}
 {{ queryset|json_script:"all-movies" }}
-<script>
-    const movies = JSON.parse(document.getElementById('all-movies').textContent);
-
-    const searchbox = document.getElementById('search')
-    const genreDropdown = document.getElementById('genre')
-    const actorDropdown = document.getElementById('cast')
-
-    const selectionDiv = document.getElementById('selected-movies')
-
-    function getSelectedMovies(event) {
-        const selectedMovies = movies
-            .filter(movie => movie["genre"].toLowerCase().includes(genreDropdown.value.toLowerCase()))
-            .filter(movie => movie["cast"].toLowerCase().includes(actorDropdown.value.toLowerCase()))
-            .filter(movie => movie["title"].toLowerCase().includes(searchbox.value.toLowerCase()))
-            .map(movie => `<div class="col-12 col-sm-6 col-lg-4">
-            <h3><a href="/watchlist/${movie["pk"]}">${movie["title"]}</a></h3>
-            <p>Cast: ${movie["cast"]}</p>
-            <p>Genre: ${movie["genre"]}</p>
-            ${movie.watched ? "<p>You've watched this movie</p>" : ""}
-            </div>`)
-            .join("")
-        selectionDiv.innerHTML = selectedMovies
-    }
-
-    genreDropdown.addEventListener("change", getSelectedMovies)
-    actorDropdown.addEventListener("change", getSelectedMovies)
-    searchbox.addEventListener("change", getSelectedMovies)
-    searchbox.addEventListener("keyup", getSelectedMovies)
-
-</script>
+<script src="{% static 'js/filter-and-search-db.js' %}"></script>
 
 {% endblock %}
