@@ -1,5 +1,8 @@
 console.log("Script loaded")
 
+const csrftoken = document.cookie.split("=")[1]
+console.log(csrftoken)
+
 const resultDiv = document.querySelector('#show-results')
 const searchInput = document.querySelector('#search');
 searchInput.addEventListener('change', displayMatches);
@@ -18,7 +21,17 @@ function displayMatches() {
 function makeHtmlString(data) {
     fetch(`http://www.omdbapi.com/?i=${data}&apikey=da298606`)
         .then(result => result.json())
-        .then(result => `<h3>${result.Title}</h3><p>ID: ${result.imdbID}</p><p>Cast: ${result.Actors}</p><p>Genre: ${result.Genre}</p>
-        <form method="POST">{% csrf_token %}<input type="hidden" name="title" value="${result.Title}"><input type="hidden" name="cast" value="${result.Actors}"><input type="hidden" name="genre" value="${result.Genre}"><input type="hidden" name="id" value="${result.imdbID}"><input type="submit" value="Add movie">`)
+        .then(result => `<h3>${result.Title}</h3>
+            <p>ID: ${result.imdbID}</p>
+            <p>Cast: ${result.Actors}</p>
+            <p>Genre: ${result.Genre}</p>
+            <form method="POST">
+            <input type="hidden" name="csrfmiddlewaretoken" value="${csrftoken}">
+            <input type="hidden" name="title" value="${result.Title}">
+            <input type="hidden" name="cast" value="${result.Actors}">
+            <input type="hidden" name="genre" value="${result.Genre}">
+            <input type="hidden" name="id" value="${result.imdbID}">
+            <input type="submit" value="Add movie">
+            </form>`)
         .then(htmlString => resultDiv.innerHTML += htmlString)
 }
