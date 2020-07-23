@@ -1,27 +1,33 @@
 {% extends "base.html" %}
 {% block content %}
 <div class="row">
-    <div class="col-12 mx-auto text-center">
+    <div class="col-12 col-md-8 mx-auto text-center">
         <h3>{{object.movie}}</h3>
         <p>Cast: {{object.movie.cast}}</p>
         <p>Genre: {{object.movie.genre}}</p>
         {% if object.watched %}
         <p>You've watched this movie</p>
-        <form method="post">
-            {% csrf_token %}
-            <button type="submit">Set status to UNWATCHED</button>
-        </form>
         {% else %}
         <p>You have not watched this movie yet</p>
-        <form method="post">
-            {% csrf_token %}
-            <button class="btn btn-warning" type="submit">Set status to WATCHED</button>
-        </form>
         {% endif %}
-        <!-- Button trigger modal -->
-        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#confirm-delete">
-            Delete
-        </button>
+        <div class="row btn-row">
+            <div class="col-6">
+
+                <form method="post">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-warning">set status to {% if object.watched %} unwatched {% else %} watched
+                        {% endif %}</button>
+                </form>
+                
+            </div>
+            <div class="col-6">
+                <!-- Button trigger modal -->
+                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#confirm-delete">
+                    Delete
+                </button>
+
+            </div>
+        </div>
 
         <!-- Modal -->
         <div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
@@ -49,7 +55,7 @@
         </div>
     </div>
 </div>
-<div class="row">
+<div class="row mt-5">
     <a href="{% url 'watchlist:watchlist' %}" class="btn btn-primary mx-auto">Back to Watchlist</a>
 </div>
 {% endblock %}
