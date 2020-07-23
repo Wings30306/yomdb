@@ -1,6 +1,8 @@
 from django.db import models
 from datetime import date
 from django.contrib.auth.models import User
+from django.core.exceptions import ValidationError
+from django.utils.translation import gettext_lazy as _
 
 # Create your models here.
 
@@ -31,6 +33,10 @@ class WatchlistItem(models.Model):
                     'user'],
                 name="watchlist_item"),
         ]
+
+    def clean(self):
+        if self.date_added > date.today():
+            raise ValidationError(_('Watchlist items cannot be added with a future date.'))
 
     def __str__(self):
         return self.movie.title + " on " + self.user.username + "'s Watchlist"
