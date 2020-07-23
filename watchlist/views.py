@@ -94,6 +94,13 @@ class CreateWatchlistItem(CreateView):
 
 
 @login_required
+def delete_watchlist_item(request, primary_key):
+    item = WatchlistItem.objects.get(pk=primary_key)
+    item.delete()
+    return redirect("watchlist:watchlist")
+
+
+@login_required
 def add_movie(request):
     """Add movie and save it as to the user's watchlist"""
     if request.method == "POST":
