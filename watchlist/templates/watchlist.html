@@ -1,18 +1,37 @@
 {% extends "base.html" %}
 {% load static %}
 {% block content %}
-<div class="row">
-    <div class="col-12 col-md-4"><input type="search" name="title" id="search" class="mx-auto"></div>
-    <div class="col-12 col-md-4">
-        <select name="genre" id="genre">
+<form method="POST" class="row py-3">
+    <div class="col-12 col-lg-3">
+        <h5>Search the database (backend)</h5>
+    </div>
+    <div class="col-12 col-lg-6">
+        <input type="search" name="title" id="title" class="w-100 h-100" placeholder="Search here">
+    </div>
+    <div class="col-12 col-lg-3">
+        <button class="btn btn-secondary w-100 h-100" type="submit">Search</button>
+    </div>
+</form>
+<div class="row bg-secondary py-3">
+    <div class="col-12 col-lg-3">
+        <h5 class="h-100">Filter by:</h5>
+    </div>
+    <div class="col-12 col-md-4 col-lg-3">
+        <label class="d-none d-xl-block w-xl-25" for="title">Title: </label>
+        <input type="search" name="title" id="title" class="w-100 mh-100" placeholder="Search for a title">
+    </div>
+    <div class="col-12 col-md-4 col-lg-3">
+        <label class="d-none d-xl-block" for="genre">Genre: </label>
+        <select name="genre" id="genre" class="w-100 mh-100">
             <option value="">No Genre Selected</option>
             {% for genre in genres %}
             <option value="{{ genre }}">{{ genre }}</option>
             {% endfor %}
         </select>
     </div>
-    <div class="col-12 col-md-4">
-        <select name="cast" id="cast">
+    <div class="col-12 col-md-4 col-lg-3">
+        <label class="d-none d-xl-block" for="genre">Cast member: </label>
+        <select name="cast" id="cast" class="w-100 mh-100">
             <option value="">No Actor Selected</option>
             {% for actor in actors %}
             <option value="{{ actor }}">{{ actor }}</option>
@@ -20,7 +39,7 @@
         </select>
     </div>
 </div>
-<div id="selected-movies" class="row">
+<div id="selected-movies" class="row py-3">
     {% for item in queryset %}
     <div class="col-12 col-sm-6 col-lg-4">
         <h3><a href="{% url 'watchlist:watchlist_detail' primary_key=item.pk %}">{{item.title}}</a></h3>
