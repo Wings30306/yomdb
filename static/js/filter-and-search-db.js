@@ -1,6 +1,6 @@
 const movies = JSON.parse(document.getElementById('all-movies').textContent);
 
-const searchbox = document.getElementById('search')
+const searchbox = document.getElementById('title')
 const genreDropdown = document.getElementById('genre')
 const actorDropdown = document.getElementById('cast')
 
