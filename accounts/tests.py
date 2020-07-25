@@ -21,5 +21,6 @@ class AccountsTests(TestCase):
     
 class UserModelTest(TestCase):
     def test_string_representation(self):
+        """ Test admin side string representation of User instance """
         user = User(username="TestUser")
         self.assertEqual(str(user), user.username)
