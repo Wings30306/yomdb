@@ -10,7 +10,7 @@ searchInput.addEventListener('keyup', displayMatches);
 
 function displayMatches() {
     resultDiv.innerHTML = ""
-    const API = "http://www.omdbapi.com/?type=movie&apikey=da298606&s="
+    const API = "https://www.omdbapi.com/?type=movie&apikey=da298606&s="
     fetch(API + this.value)
         .then(searchResult => searchResult.json())
         .then(movies => movies.Search
@@ -19,7 +19,7 @@ function displayMatches() {
 
 
 function makeHtmlString(data) {
-    fetch(`http://www.omdbapi.com/?i=${data}&apikey=da298606`)
+    fetch(`https://www.omdbapi.com/?i=${data}&apikey=da298606`)
         .then(result => result.json())
         .then(result => `<h3>${result.Title}</h3>
             <p>ID: ${result.imdbID}</p>
