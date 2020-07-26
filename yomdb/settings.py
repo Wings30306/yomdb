@@ -30,7 +30,7 @@ SECRET_KEY = os.environ.get("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get("DEV")
 
-ALLOWED_HOSTS = ["0.0.0.0", "your-own-movie-database.herokuapp.com"]
+ALLOWED_HOSTS = ["0.0.0.0", "127.0.0.1", "your-own-movie-database.herokuapp.com"]
 
 
 # Application definition
@@ -87,9 +87,11 @@ WSGI_APPLICATION = 'yomdb.wsgi.application'
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
 if os.getenv("DATABASE_URL"):
+    print("Using Database URL")
     DATABASES = {'default': dj_database_url.parse(
         os.environ.get('DATABASE_URL'))}
 else:
+    print("No Database URL found, using SQLite instead")
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
