@@ -10,7 +10,7 @@ searchInput.addEventListener('keyup', displayMatches);
 
 function displayMatches() {
     resultDiv.innerHTML = ""
-    const API = "http://www.omdbapi.com/?type=movie&apikey=da298606&s="
+    const API = "https://www.omdbapi.com/?type=movie&apikey=da298606&s="
     fetch(API + this.value)
         .then(searchResult => searchResult.json())
         .then(movies => movies.Search
