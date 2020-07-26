@@ -27,9 +27,9 @@ def helper():
                 genres.append(genre)
         for actor in movie_actors:
             if actor not in actors:
-                actors.append(actor)
-        genres_alphabetical = sorted(genres)
-        actors_alphabetical = sorted(actors, key=lambda x: x.split(" ")[-1])
+                actors.append(actor)              
+    genres_alphabetical = sorted(genres)
+    actors_alphabetical = sorted(actors, key=lambda x: x.split(" ")[-1])
     list_by_type.update({"titles": titles,
                          "actors": actors_alphabetical,
                          "genres": genres_alphabetical})
