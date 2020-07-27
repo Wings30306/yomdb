@@ -8,10 +8,9 @@ from datetime import date
 from .models import WatchlistItem, Movie
 
 
-def helper():
+def helper(movies):
     """Create lists of all titles, genres and actors in database
     This will be used for populating dropdowns and search functionality"""
-    movies = Movie.objects.all()
     list_by_type = {}
     titles = []
     genres = []
@@ -39,7 +38,11 @@ def helper():
 @login_required
 def Watchlist(request):
     """Show all watchlist items saved by user"""
-    list_by_type = helper()
+    movies_in_watchlist = []
+    user_watchlist = WatchlistItem.objects.select_related('movie').filter(user=request.user)
+    for item in user_watchlist:
+        movies_in_watchlist.append(item.movie)
+    list_by_type = helper(movies_in_watchlist)
     movies = [
         {
             "pk": entry.id,
