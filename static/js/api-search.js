@@ -3,8 +3,8 @@ console.log("Script loaded")
 const csrftoken = document.cookie.split("=")[1]
 console.log(csrftoken)
 
-const resultDiv = document.querySelector('#show-results')
-const searchInput = document.querySelector('#search');
+const resultDiv = document.querySelector('#api-results')
+const searchInput = document.querySelector('#api-search');
 searchInput.addEventListener('change', displayMatches);
 searchInput.addEventListener('keyup', displayMatches);
 
@@ -25,7 +25,7 @@ function makeHtmlString(data) {
             <p>ID: ${result.imdbID}</p>
             <p>Cast: ${result.Actors}</p>
             <p>Genre: ${result.Genre}</p>
-            <form method="POST">
+            <form action="/watchlist/add-movie/" method="POST">
             <input type="hidden" name="csrfmiddlewaretoken" value="${csrftoken}">
             <input type="hidden" name="title" value="${result.Title}">
             <input type="hidden" name="cast" value="${result.Actors}">
