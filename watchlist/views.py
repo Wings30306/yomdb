@@ -4,11 +4,14 @@ from django.conf import settings
 from django.contrib.auth.decorators import login_required
 import requests
 import json
+import logging
 from datetime import date
 from .models import WatchlistItem, Movie
 
+logger = logging.getLogger(__name__)
 
-def helper(movies):
+
+def helper(movies, user):
     """Create lists of all titles, genres and actors in database
     This will be used for populating dropdowns and search functionality"""
     list_by_type = {}
@@ -32,6 +35,7 @@ def helper(movies):
     list_by_type.update({"titles": titles,
                          "actors": actors_alphabetical,
                          "genres": genres_alphabetical})
+    logger.info("List by type generated for user " + user.username + ":\n" + str(list_by_type))
     return list_by_type
 
 
@@ -42,7 +46,7 @@ def Watchlist(request):
     user_watchlist = WatchlistItem.objects.select_related('movie').filter(user=request.user)
     for item in user_watchlist:
         movies_in_watchlist.append(item.movie)
-    list_by_type = helper(movies_in_watchlist)
+    list_by_type = helper(movies_in_watchlist, request.user)
     movies = [
         {
             "pk": entry.id,
@@ -58,6 +62,7 @@ def Watchlist(request):
         "actors": list_by_type["actors"]
     }
     template_name = "watchlist.html"
+    logger.info(request.user.username + " accessed their Watchlist page")
     return render(request, template_name, context)
 
 
@@ -69,15 +74,17 @@ def watchlist_detail(request, primary_key):
         obj = WatchlistItem.objects.get(pk=primary_key)
         obj.watched = not obj.watched
         obj.save()
+        logger.info("Watchlist item status is updated")
         return redirect('watchlist:watchlist_detail', primary_key=primary_key)
     try:
         obj = WatchlistItem.objects.get(pk=primary_key)
+        logger.info("Rendering watchlist detail page for " + obj.movie.title)
         context = {
             "object": obj
         }
     except WatchlistItem.DoesNotExist:
-        messages.error(request, 'No movie in watchlist with this id: ' +
-                       primary_key + '</em>.')
+        logger.warning('No movie in watchlist with this id: ' +
+                       str(primary_key) + '.')
         return redirect("watchlist:watchlist")
     return render(request, template_name=template_name, context=context)
 
@@ -109,7 +116,9 @@ def add_movie(request):
     if request.method == "POST":
         try:
             Movie.objects.get(api_id=request.POST.get("id"))
+            logger.warning("Movie already in database")
         except Movie.DoesNotExist:
+            logger.info("Adding movie to database")
             Movie.objects.create(
                 api_id=request.POST.get("id"),
                 title=request.POST.get("title"),
@@ -119,7 +128,9 @@ def add_movie(request):
         movie = Movie.objects.get(api_id=request.POST.get("id"))
         try:
             WatchlistItem.objects.get(movie=movie, user=request.user)
+            logger.warning("Watchlist item for this movie and user already exists")
         except WatchlistItem.DoesNotExist:
+            logger.info("Creating new Watchlist item")
             WatchlistItem.objects.create(
                 user=request.user,
                 movie=movie,
