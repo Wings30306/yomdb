@@ -5,9 +5,9 @@ from django.contrib.auth.models import User
 class AccountsTests(TestCase):
 
     def test_homepage(self):
-        """ Test that homepage is rendered """
+        """ Test that homepage redirects """
         response = self.client.get('/')
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, 302)
 
     def test_login_page(self):
         """ Check that page redirects to secure site (https) """
